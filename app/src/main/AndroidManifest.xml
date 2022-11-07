@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
+<!--    给application配置name这样就可以在项目任何位置通过调用SunnyWeatherApplication.context来获取Context对象-->
     <application
+        android:name=".SunnyWeatherApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
