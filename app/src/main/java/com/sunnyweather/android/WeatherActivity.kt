@@ -55,10 +55,40 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
+            swipeRefresh.isRefreshing = false //请求结束 要隐藏进度条
         })
-       viewModel.refreshWeather(viewModel.locationLng,viewModel.locationLat)
+        swipeRefresh.setColorSchemeResources(R.color.black) //设置下拉刷新进度条颜色
+        refreshWeather()
+        swipeRefresh.setOnRefreshListener {
+            refreshWeather()
+        }//下拉刷新的监听器
+
+        //打开侧滑菜单
+        navBtn.setOnClickListener(){
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+        drawerLayout.addDrawerListener(object :DrawerLayout.DrawerListener{
+            override fun onDrawerStateChanged(newState: Int) {}
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+            override fun onDrawerOpened(drawerView: View) {}
+
+            override fun onDrawerClosed(drawerView: View) {
+                val manager=getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(drawerView.windowToken,InputMethodManager.HIDE_NOT_ALWAYS)
+                //滑动菜单被隐藏时同时隐藏输入法
+
+            }
+
+
+        })
 
     }
+
+    fun refreshWeather(){
+        viewModel.refreshWeather(viewModel.locationLng,viewModel.locationLat)
+        swipeRefresh.isRefreshing=true  //显示下拉刷新进度条
+    }//下拉刷新
 
 
 
